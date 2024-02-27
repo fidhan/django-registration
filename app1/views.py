@@ -42,26 +42,25 @@ def HomePage(request):
         email = request.POST.get('email')
         message = request.POST.get('message')
         
-        # List of email addresses to which the message will be sent
-        recipient_emails = ['fidha@cybersquare.org', email]  # Adding email from the form
+        # recipients
+        recipient_emails = ['fidha@cybersquare.org', email]  #email from the form
         random_string = ''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase + string.digits, k=10))
         
-        # Render the HTML template
+        #template
         context = {'username': uname, 'email': email, 'message': message, 'random_string': random_string}
         html_content = render_to_string('email_template.html', context)
         
-        # Create an EmailMultiAlternatives object
         msg = EmailMultiAlternatives(
             subject='Email Verification',
-            body=strip_tags(html_content),  # Plain text version of the email
+            body=strip_tags(html_content),  # plain text version of the email
             from_email=settings.EMAIL_HOST_USER,
             to=recipient_emails,
         )
         
-        # Attach the HTML content to the email
+        # Attach the html content to the email
         msg.attach_alternative(html_content, "text/html")
         
-        # Send the email
+        #send
         msg.send()
     return render(request, 'home.html')    
     
